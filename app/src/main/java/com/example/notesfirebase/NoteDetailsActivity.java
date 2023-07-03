@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +17,9 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
     EditText titleedt, contentedt;
     ImageButton saveNoteBtn;
+    TextView paeTitletv;
+    String title,content,docId;
+    boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,25 @@ public class NoteDetailsActivity extends AppCompatActivity {
         titleedt = findViewById(R.id.notes_title_tv);
         contentedt = findViewById(R.id.notes_content_tv);
         saveNoteBtn = findViewById(R.id.save_note_btn);
+
+        paeTitletv = findViewById(R.id.page_title);
+
+        //receive data
+        title = getIntent().getStringExtra("title");
+        content = getIntent().getStringExtra("content");
+        docId = getIntent().getStringExtra("docId");
+
+        if (docId != null && !docId.isEmpty()){
+            isEditMode = true;
+        }
+
+        titleedt.setText(title);
+        contentedt.setText(content);
+        if (isEditMode){
+            paeTitletv.setText("Edit your note");
+        }
+
+
 
         saveNoteBtn.setOnClickListener((v) -> saveNote());
     }
@@ -48,6 +71,15 @@ public class NoteDetailsActivity extends AppCompatActivity {
 
     void saveNoteToFirebase(Note note){
         DocumentReference documentReference;
+        if (isEditMode){
+            //updat the note
+            documentReference = Utility.getCollectionReferenceForNotes().document(docId);
+
+        }else {
+            //creat new note
+            documentReference = Utility.getCollectionReferenceForNotes().document();
+
+        }
         documentReference = Utility.getCollectionReferenceForNotes().document();
 
         documentReference.set(note).addOnCompleteListener(new OnCompleteListener<Void>() {
