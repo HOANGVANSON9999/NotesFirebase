@@ -42,7 +42,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     }
 
-   private void createAccount() {
+    void createAccount() {
         String email = emailedt.getText().toString();
         String password = passwordedt.getText().toString();
         String comfirmPassword = comfirmPasswordedt.getText().toString();
@@ -51,6 +51,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         if (!isValidated) {
             return;
         }
+
         createAccountFirebase(email, password);
 
 
@@ -67,13 +68,14 @@ public class CreateAccountActivity extends AppCompatActivity {
                             changeInProgressBar(false);
                             if (task.isSuccessful()) {
                                 //creating acc is done
-                                Toast.makeText(CreateAccountActivity.this, "Succesfully created account,Check email to verify", Toast.LENGTH_SHORT).show();
+                                Utility.showToast(CreateAccountActivity.this, "Succesfully created account,Check email to verify");
                                 firebaseAuth.getCurrentUser().sendEmailVerification();
                                 firebaseAuth.signOut();
                                 finish();
                             }else {
                                 //failure
-                                Toast.makeText(CreateAccountActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Utility.showToast(CreateAccountActivity.this, task.getException().getMessage());
+
 
                             }
                         }
