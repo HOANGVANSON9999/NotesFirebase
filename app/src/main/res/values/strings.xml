@@ -13,5 +13,8 @@
     <string name="add_new_note">Add New Note</string>
     <string name="title">Title</string>
     <string name="content">Content</string>
+    <string name="notes">Notes</string>
+    <string name="note_title">note title</string>
+    <string name="this_can_be_note_content_that_can_be_long">this can be note content that can be long</string>
 
 </resources>
